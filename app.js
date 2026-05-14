@@ -1,8 +1,16 @@
+const mongoose = require('mongoose'); //Pour importer mongoose lié à MongoDB
 const express = require('express'); //Pour importer express
 
 const app = express(); //Pour créer une app
 
 app.use(express.json()); //Intercèpte toutes les requêtes qui sont en JSON (GET,POST,ect...)
+
+mongoose.connect('mongodb+srv://User1_Elia:Elia@ws6-oc.k1ttgr3.mongodb.net/test')
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch((err) => {
+        console.log('Connexion à MongoDB échouée !');
+        console.error(err); // <== AJOUTEZ CETTE LIGNE
+    });
 
 
 app.use((req, res, next) => { //Par rapport aux défaut CORS qui serra appliqué à toutes les requêtes vu que pas de route de spécifier

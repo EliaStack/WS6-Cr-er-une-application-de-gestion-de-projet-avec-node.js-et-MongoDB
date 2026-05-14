@@ -2,6 +2,11 @@ const mongoose = require('mongoose'); //Importer mongoose lié à MongoDB
 const stuffRoutes = require('./routes/stuff'); //Importndes routes
 const express = require('express'); //Importer express
 
+//Authentification
+const userRoutes = require('./routes/user');
+
+
+
 const app = express(); //Pour créer une app
 
 app.use(express.json()); //Intercèpte toutes les requêtes qui sont en JSON (GET,POST,ect...)
@@ -22,6 +27,8 @@ app.use((req, res,next) => { //Par rapport aux défaut CORS qui serra appliqué 
 });
 
 app.use('/api/stuff', stuffRoutes); //Remettre le début de la route pour dire que stuffRoutes est envoyé à l'api stuff
+
+app.use('/api/auth', userRoutes); //Enregistrement des routes, racine de tout ce qui est liée à l'authentification
 
 module.exports = app; //Exporte les fichiers pour les rendres accesibles nottament avec serveur node
 

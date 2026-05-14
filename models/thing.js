@@ -9,7 +9,7 @@ const thingSchema = mongoose.Schema({ //Par rapport à app.js pas besoin add id 
 });
 
 module.exports = mongoose.model('thing', thingSchema); //Exporter le modèle avec les données
-//thing = nom du model, thingSchema=nom de la const
+//thing = nom du fichier js, thingSchema=nom de la const
 
 
  

@@ -1,5 +1,6 @@
-const mongoose = require('mongoose'); //Pour importer mongoose lié à MongoDB
-const express = require('express'); //Pour importer express
+const mongoose = require('mongoose'); //Importer mongoose lié à MongoDB
+const Thing = require('./models/thing'); //Import du modèle de schéma thing 
+const express = require('express'); //Importer express
 
 const app = express(); //Pour créer une app
 
@@ -20,34 +21,43 @@ app.use((req, res, next) => { //Par rapport aux défaut CORS qui serra appliqué
     next();
 });
 
+//Met tous
 app.post('/api/stuff', (req, res, next) => {
-    console.log(req.body);
-    res.status(201).json({ //Création de ressource
-        message: 'Objet crées'
+    delete req.body._id; //Faux id envoyé par le frontend
+    const thing = new Thing({ //New instance
+        ...req.body
     });
-
+    thing.save() //Enregistre les données
+        .then(() => res.status(201).json({ message: 'Objet enregistré !' })) //I l faut dire que tout va bien au cas où
+        .catch(error => res.status(400).json({ error }));
 });
 
+//Mettre à jour
+app.put('/api/stuff/:id', (req, res, next) => {
+    Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Objet modifié !' }))
+        .catch(error => res.status(400).json({ error }));
+});
+
+//Su^^rimer en fonction de l'id
+app.delete('/api/stuff/:id', (req, res, next) => {
+    Thing.deleteOne({ _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+        .catch(error => res.status(400).json({ error }));
+});
+
+//Récupère en fonction de l'id
+app.get('/api/stuff/:id', (req, res, next) => {
+    Thing.findOne({ _id: req.params.id })
+        .then(thing => res.status(200).json(thing))
+        .catch(error => res.status(404).json({ error }));
+});
+
+//Récupère tous
 app.get('/api/stuff', (req, res, next) => {
-    const stuff = [
-        {
-            _id: 'oeihfzeoi',
-            title: 'Mon premier objet',
-            description: 'Les infos de mon premier objet',
-            imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-            price: 4900,
-            userId: 'qsomihvqios',
-        },
-        {
-            _id: 'oeihfzeomoihi',
-            title: 'Mon deuxième objet',
-            description: 'Les infos de mon deuxième objet',
-            imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-            price: 2900,
-            userId: 'qsomihvqios',
-        },
-    ];
-    res.status(200).json(stuff);
+    Thing.find() //Trouver tt les things
+        .then(things => res.status(200).json(things)) //Récup tableaux des things
+        .catch(error => res.status(400).json({ error }));
 });
 
 module.exports = app; //Exporte les fichiers pour les rendres accesibles nottament avec serveur node

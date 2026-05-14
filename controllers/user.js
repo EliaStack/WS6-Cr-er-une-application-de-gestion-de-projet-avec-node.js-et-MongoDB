@@ -1,10 +1,11 @@
 const bcrypt = require('bcrypt');
-const user = require('../models/user');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
 exports.signup = (req, res, next) => { //Enregistrement de new user
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
-            const user = new user({ //Nouvelle user
+            const user = new User({ //Nouvelle user
                 email: req.body.email,
                 password: hash
             });
@@ -16,7 +17,7 @@ exports.signup = (req, res, next) => { //Enregistrement de new user
 };
 
 exports.login = (req, res, next) => { //Connecter des utilisateurs existants
-    user.findOne({ email: req.body.email })
+    User.findOne({ email: req.body.email })
         .then(user => {
             if (user === null) {
                 res.status(401).json({ message: 'Paire identifiant/mot de passe incorrecte' })
@@ -29,11 +30,15 @@ exports.login = (req, res, next) => { //Connecter des utilisateurs existants
                             res.status(200).json({
                                 //Nécessaire pour l'auth des requête émise par le client
                                 userId: user._id,
-                                token: 'TOKEN'
+                                token: jwt.sign(
+                                    {userId: user._id},
+                                    'RANDOM_TOKEN_SECRET',
+                                    {expiresIn:'24h'}
+                                )
                             });
                         }
                     })
-                    .catche(error => {
+                    .catch(error => {
                         res.status(500).json({ error }); //Erreur serveur
                     })
             }

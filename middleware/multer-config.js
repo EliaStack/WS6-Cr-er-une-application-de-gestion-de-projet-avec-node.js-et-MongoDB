@@ -1,7 +1,5 @@
 const multer = require('multer');
-const { useCallback } = require('react');
 
-console.log('Multer est en route');
 
 const MIME_TYPES = {
     'image/jpg': 'jpg',

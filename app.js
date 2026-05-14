@@ -5,6 +5,7 @@ const express = require('express'); //Importer express
 //Authentification
 const userRoutes = require('./routes/user');
 
+const path = require('path');
 
 
 const app = express(); //Pour créer une app
@@ -29,6 +30,7 @@ app.use((req, res,next) => { //Par rapport aux défaut CORS qui serra appliqué 
 app.use('/api/stuff', stuffRoutes); //Remettre le début de la route pour dire que stuffRoutes est envoyé à l'api stuff
 
 app.use('/api/auth', userRoutes); //Enregistrement des routes, racine de tout ce qui est liée à l'authentification
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app; //Exporte les fichiers pour les rendres accesibles nottament avec serveur node
 

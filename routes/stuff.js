@@ -1,15 +1,16 @@
 const express = require('express'); //Import de express
-const auth = require('../middleware/auth');
 const router = express.Router(); //Créaton du router
+const auth = require('../middleware/auth');
+const multer = require('../middleware/multer-config');
 
 
 const stuffCtrl = require('../controllers/stuff'); //Import du fichier js controllers
 
 //Met tous
-router.post('/', auth, stuffCtrl.createThing); //Apelle de la fct createThing
+router.post('/', auth, multer, stuffCtrl.createThing); //Apelle de la fct createThing
 
 //Mettre à jour
-router.put('/:id', auth, stuffCtrl.modifyThing); //Apelle de la fct modifyThing
+router.put('/:id', auth, multer, stuffCtrl.modifyThing); //Apelle de la fct modifyThing
 
 //Supprimer en fonction de l'id
 router.delete('/:id', auth, stuffCtrl.deleteThing);

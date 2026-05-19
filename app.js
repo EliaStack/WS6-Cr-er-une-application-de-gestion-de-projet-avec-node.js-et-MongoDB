@@ -54,6 +54,8 @@ app.use('/api/stuff', stuffRoutes); //Remettre le début de la route pour dire q
 app.use('/api/auth', userRoutes); //Enregistrement des routes, racine de tout ce qui est liée à l'authentification
 app.use('/images', express.static(path.join(__dirname, 'images'))); //express.static = donne accès aux fichiers de manière public
 
+setupSwagger(app);
+ 
 module.exports = app; //Exporte les fichiers pour les rendres accesibles nottament avec serveur node
 
 

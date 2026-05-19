@@ -11,7 +11,7 @@ const MIME_TYPES = {
 //Objet de configuration pour multer
 const storage = multer.diskStorage({ //Enregister sur le disque
     destination: (req, file, callback) => {
-        callback(null, 'images')
+        callback(null, 'images') //'image'=dossier ou ce sera rangé
     },
     filename: (req, file, callback) => {
         const name = file.originalname.split(' ').join('_'); //Sa élimine le pb des espaces

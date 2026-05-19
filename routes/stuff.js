@@ -22,6 +22,8 @@ router.post('/', auth, multer, stuffCtrl.createThing); //Apelle de la fct create
  * post:
  *  summary: Connexion
  *  tags:[Users]
+ *  security:
+ *      -bearerAuth: []
  *  requestBody:
  *      required:true
  *      content:
@@ -50,7 +52,8 @@ router.post('/', auth, multer, stuffCtrl.createThing); //Apelle de la fct create
  *                      type: string
  *  400:
  *    description: Authentification échouée    
- * 
+ *  401:
+ *    description: Token obligatoire 
  */
 
 

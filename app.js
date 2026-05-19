@@ -10,6 +10,7 @@ const path = require('path');
 
 dotenv.config();
 const app = express(); //Pour créer une app
+const setupSwagger = require('./swagger');
 app.use(helmet()); //Appel de helmet dans .appS
 app.use(express.json()); //Intercèpte toutes les requêtes qui sont en JSON (GET,POST,ect...)
 
